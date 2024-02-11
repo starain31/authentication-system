@@ -79,7 +79,7 @@ describe('Service: authenticationService', function () {
 
         const username = 'test_user_1';
         const password = 'test_user_1_password';
-        const email = '';
+        const email = 'test_user_1@test.com';
 
         const register_params = {
             username,
