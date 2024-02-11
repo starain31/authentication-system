@@ -1,0 +1,14 @@
+#write a docker compose configuration file for node.js
+#docker-compose.yml
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    command: "npm start"
