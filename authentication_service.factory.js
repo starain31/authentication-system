@@ -1,10 +1,15 @@
 function create_authentication_service({ database_service }) {
-    function login(params) {
-        
+    function register(params) {
+
     }
-    
+
+    function login(params) {
+
+    }
+
     return {
         login,
+        register,
     };
 }
 
