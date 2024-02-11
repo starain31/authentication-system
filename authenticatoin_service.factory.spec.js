@@ -13,4 +13,8 @@ describe('Service: authenticationService', function () {
     it('should be defined', function () {
         expect(authentication_service).toBeDefined();
     });
+
+    it('should have a login method', function () {
+        expect(authentication_service.login).toBeDefined();
+    });
 }); 

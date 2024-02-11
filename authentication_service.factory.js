@@ -1,5 +1,11 @@
 function create_authentication_service({ database_service }) {
-    return {};
+    function login(params) {
+        
+    }
+    
+    return {
+        login,
+    };
 }
 
 module.exports = {
