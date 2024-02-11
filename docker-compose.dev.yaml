@@ -6,7 +6,9 @@ services:
     build: .
     ports:
       - "3000:3000"
+    volumes:
+      - .:/app
     environment:
       - NODE_ENV=development
       - PORT=3000
-    command: "npm start"
+    command: "npm run dev"
