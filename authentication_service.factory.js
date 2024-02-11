@@ -1,6 +1,13 @@
-function create_authentication_service({ database_service }) {
+function create_authentication_service({ database_service, hash_service }) {
     function register(params) {
-        database_service.create_user(params);
+        const password_hash = hash_service.hash_password(params.password);
+
+        database_service.create_user({
+            username: params.username,
+            password: password_hash,
+            email: params.email,
+        });
+
         return true;
     }
 
@@ -10,7 +17,9 @@ function create_authentication_service({ database_service }) {
             throw new Error('Invalid username');
         }
 
-        if (user.password !== params.password) {
+        const password_hash = hash_service.hash_password(params.password);
+
+        if (user.password !== password_hash) {
             throw new Error('Invalid password');
         }
         return "token";
