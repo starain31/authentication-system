@@ -2,7 +2,8 @@
 #docker-compose.yml
 version: '3'
 services:
-  web:
+  api:
+    container_name: auth-api
     build: .
     ports:
       - "3000:3000"
@@ -10,3 +11,13 @@ services:
       - NODE_ENV=development
       - PORT=3000
     command: "npm start"
+
+  mongo:
+    container_name: auth-database
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=authenication_service
