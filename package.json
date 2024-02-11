@@ -1,0 +1,22 @@
+{
+  "name": "authentication-system",
+  "version": "1.0.0",
+  "description": "authentication system",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/starain31/authentication-system.git"
+  },
+  "keywords": [
+    "authentication"
+  ],
+  "author": "nazmus sakib",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/starain31/authentication-system/issues"
+  },
+  "homepage": "https://github.com/starain31/authentication-system#readme"
+}
