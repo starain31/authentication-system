@@ -20,7 +20,7 @@ function create_authentication_service({ database_service, crypto_service }) {
             throw new Error('Invalid username');
         }
 
-        const password_hash = crypto_service.hash_password(params.password);
+        const password_hash = crypto_service.hash_password(password);
 
         if (user.password !== password_hash) {
             throw new Error('Invalid password');
