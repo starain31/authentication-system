@@ -21,4 +21,30 @@ describe('Service: authenticationService', function () {
     it('should have a register method', function () {
         expect(authentication_service.register).toBeDefined();
     });
+
+    it('should register a user and able to login', function () {
+        const username = 'test_user_1';
+        const password = 'test_user_1_password';
+        const email = 'test@test.com';
+
+        const register_params = {
+            username,
+            password,
+            email,
+        };
+
+        const result = authentication_service.register(register_params);
+
+        expect(result).toBe(true);
+
+        const login_params = {
+            username,
+            password,
+        };
+
+        const login_result = authentication_service.login(login_params);
+
+        expect(typeof login_result).toBe('string');
+    });
+
 }); 
