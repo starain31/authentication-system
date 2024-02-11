@@ -105,7 +105,7 @@ describe('Service: authenticationService', function () {
             email,
         };
 
-        const result = authentication_service.register(register_params);
+        authentication_service.register(register_params);
 
         const wrong_login_params = {
             username,
@@ -114,14 +114,14 @@ describe('Service: authenticationService', function () {
 
         expect(function () {
             authentication_service.login(wrong_login_params);
-        }).toThrow();
+        }).toThrow(new Error('Invalid password'));
     });
 
     it('should authenticate a user with auth_token', function () {
         const database_service = create_mock_database_service();
         const crypto_service = create_crypto_service({ secret: SECRET, auth_token_lenght: AUTH_TOKEN_LENGHT });
         const authentication_service = create_authentication_service({ database_service, crypto_service });
-        token
+        
         const username = 'test_user_1';
         const password = 'test_user_1_password';
         const email = 'test_user_1@test.com';
@@ -144,6 +144,19 @@ describe('Service: authenticationService', function () {
         const authenticate_result = authentication_service.authenticate({ auth_token });
 
         expect(authenticate_result).toBe(true);
+    });
+
+    it('should not authenticate a user with invalid auth_token', function () {
+        const database_service = create_mock_database_service();
+        const crypto_service = create_crypto_service({ secret: SECRET, auth_token_lenght: AUTH_TOKEN_LENGHT });
+        const authentication_service = create_authentication_service({ database_service, crypto_service });
+
+        const invalid_auth_token = 'invalid_auth_token';
+
+        expect(function () {
+            authentication_service.authenticate({ auth_token: invalid_auth_token });
+        }).toThrow(new Error('Invalid token'));
+
     });
 
 }); 
