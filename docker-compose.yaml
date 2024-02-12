@@ -11,6 +11,8 @@ services:
       - NODE_ENV=development
       - PORT=3000
       - MONGODB_URI=mongodb://admin:password@mongodb:27017
+      - AUTH_TOKEN_LENGHT=256
+      - PASSWORD_HASH_SECRET=mirpur_rocks
     command: "npm start"
     networks:
       - default

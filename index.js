@@ -4,9 +4,9 @@ const { create_database_service } = require('./database_service.factory');
 const { create_authentication_service } = require('./authentication_service.factory');
 const { create_crypto_service } = require('./crypto_service.factory');
 
-const AUTH_TOKEN_LENGHT = 256;
-const SECRET = 'mirpur rocks!!!';
-const port = process.env.PORT || 3000;
+const AUTH_TOKEN_LENGHT = parseInt(process.env.AUTH_TOKEN_LENGHT);
+const PASSWORD_HASH_SECRET = process.env.PASSWORD_HASH_SECRET;
+const PORT = parseInt(process.env.PORT);
 const MONGODB_URI = process.env.MONGODB_URI;
 
 (async () => {
@@ -19,7 +19,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 		database_name: 'authentication'
 	});
 
-	const crypto_service = create_crypto_service({ secret: SECRET, auth_token_lenght: AUTH_TOKEN_LENGHT });
+	const crypto_service = create_crypto_service({ secret: PASSWORD_HASH_SECRET, auth_token_lenght: AUTH_TOKEN_LENGHT });
 
 	const authentication_service = create_authentication_service({ database_service, crypto_service });
 
@@ -59,8 +59,8 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 	});
 
-	app.listen(port, () => {
-		console.log(`Authentication system listening on port ${port}`);
+	app.listen(PORT, () => {
+		console.log(`Authentication system listening on port ${PORT}`);
 	});
 })();
 
