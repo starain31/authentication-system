@@ -23,11 +23,38 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 	const authentication_service = create_authentication_service({ database_service, crypto_service });
 
-	app.get('/', (req, res) => {
+	function auth_handler(req, res, next) {
+		const auth_token = req.headers['auth_token'];
+
+		console.log("🚀 ~ auth_handler ~ auth_token:", auth_token)
+
+		if (!auth_token) {
+			res.status(401).json({ error: 'Unauthorized' });
+			return;
+		}
+
+		try {
+			const user = authentication_service.authenticate({ auth_token });
+
+			if (!user) {
+				res.status(401).json({ error: 'Unauthorized' });
+				return;
+			}
+
+			req.user = user;
+			next();
+		} catch (e) {
+			console.error(e);
+			res.status(401).json({ error: 'Unauthorized' });
+			return;
+		}
+	}
+
+	app.get('/', auth_handler, (req, res) => {
 		res.send("Hello, Node.js!");
 	});
 
-	app.get('/api/info', (req, res) => {
+	app.get('/api/info', auth_handler, (req, res) => {
 		res.json({
 			name: 'Authentication system',
 			version: '1.0.0',
