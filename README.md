@@ -16,6 +16,11 @@ Authentication Rest API service
 ## Use of the project
 1. Register a user by the following request 
 `POST {{BASE_URL}}/register`
-BODY: {
-
+BODY: 
+```
+{
+   username: {{STRING}},
+   password: {{STRING}},
+   email: {{STRING}}
 }
+```
