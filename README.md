@@ -14,13 +14,14 @@ Authentication Rest API service
 4. Go to `http://localhost:3000/` to check the project is up and running.
 
 ## Use of the project
-1. Register a user by the following request 
-`POST {{BASE_URL}}/register`
-BODY: 
-```
+1. Register a user by the following request.
+  `POST {{BASE_URL}}/register`
+  BODY:
+  ```
 {
    username: {{STRING}},
    password: {{STRING}},
    email: {{STRING}}
 }
-```
+
+   ```
