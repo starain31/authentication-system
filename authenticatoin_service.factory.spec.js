@@ -61,7 +61,7 @@ describe('Service: authenticationService', function () {
         expect(authentication_service.register).toBeDefined();
     });
 
-    it('should register a user and able to login', function () {
+    it('should register a user and able to login', async function () {
         const database_service = create_mock_database_service();
         const crypto_service = create_crypto_service({ secret: SECRET, auth_token_lenght: AUTH_TOKEN_LENGHT });
         const authentication_service = create_authentication_service({ database_service, crypto_service });
@@ -76,7 +76,7 @@ describe('Service: authenticationService', function () {
             email,
         };
 
-        const result = authentication_service.register(register_params);
+        const result = await authentication_service.register(register_params);
 
         expect(result).toBe(true);
 
@@ -85,12 +85,12 @@ describe('Service: authenticationService', function () {
             password,
         };
 
-        const login_result = authentication_service.login(login_params);
+        const { auth_token } = await authentication_service.login(login_params);
 
-        expect(typeof login_result).toBe('string');
+        expect(typeof auth_token).toBe('string');
     });
 
-    it('should not log in with invalid credentials', function () {
+    it('should not log in with invalid credentials', async function () {
         const database_service = create_mock_database_service();
         const crypto_service = create_crypto_service({ secret: SECRET, auth_token_lenght: AUTH_TOKEN_LENGHT });
         const authentication_service = create_authentication_service({ database_service, crypto_service });
@@ -105,23 +105,25 @@ describe('Service: authenticationService', function () {
             email,
         };
 
-        authentication_service.register(register_params);
+        await authentication_service.register(register_params);
 
         const wrong_login_params = {
             username,
             password: 'wrong_password',
         };
 
-        expect(function () {
-            authentication_service.login(wrong_login_params);
-        }).toThrow(new Error('Invalid password'));
+        try {
+            await authentication_service.login(wrong_login_params);
+        } catch (error) {
+            expect(error.message).toBe('Invalid password');
+        }
     });
 
-    it('should authenticate a user with auth_token', function () {
+    it('should authenticate a user with auth_token', async function () {
         const database_service = create_mock_database_service();
         const crypto_service = create_crypto_service({ secret: SECRET, auth_token_lenght: AUTH_TOKEN_LENGHT });
         const authentication_service = create_authentication_service({ database_service, crypto_service });
-        
+
         const username = 'test_user_1';
         const password = 'test_user_1_password';
         const email = 'test_user_1@test.com';
@@ -132,31 +134,32 @@ describe('Service: authenticationService', function () {
             email,
         };
 
-        authentication_service.register(register_params);
+        await authentication_service.register(register_params);
 
         const login_params = {
             username,
             password,
         };
 
-        const auth_token = authentication_service.login(login_params);
+        const { auth_token } = await authentication_service.login(login_params);
 
-        const authenticate_result = authentication_service.authenticate({ auth_token });
+        const authenticate_result = await authentication_service.authenticate({ auth_token });
 
         expect(authenticate_result).toBe(true);
     });
 
-    it('should not authenticate a user with invalid auth_token', function () {
+    it('should not authenticate a user with invalid auth_token', async function () {
         const database_service = create_mock_database_service();
         const crypto_service = create_crypto_service({ secret: SECRET, auth_token_lenght: AUTH_TOKEN_LENGHT });
         const authentication_service = create_authentication_service({ database_service, crypto_service });
 
         const invalid_auth_token = 'invalid_auth_token';
 
-        expect(function () {
-            authentication_service.authenticate({ auth_token: invalid_auth_token });
-        }).toThrow(new Error('Invalid token'));
-
+        try {
+            await authentication_service.authenticate({ auth_token: invalid_auth_token });
+        } catch (error) {
+            expect(error.message).toBe('Invalid token');
+        }
     });
 
 }); 
