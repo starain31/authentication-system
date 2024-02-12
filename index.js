@@ -4,21 +4,23 @@ const { create_database_service } = require('./database_service.factory');
 const { create_authentication_service } = require('./authentication_service.factory');
 const { create_crypto_service } = require('./crypto_service.factory');
 
-
 const AUTH_TOKEN_LENGHT = 256;
 const SECRET = 'mirpur rocks!!!';
+const port = process.env.PORT || 3000;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 (async () => {
 	const app = express();
-	const port = process.env.PORT || 3000;
 
 	app.use(express.json());
 
 	const database_service = await create_database_service({
-		uri: 'mongodb://admin:password@localhost:27017/',
+		uri: MONGODB_URI,
 		database_name: 'authentication'
 	});
+
 	const crypto_service = create_crypto_service({ secret: SECRET, auth_token_lenght: AUTH_TOKEN_LENGHT });
+
 	const authentication_service = create_authentication_service({ database_service, crypto_service });
 
 	app.get('/', (req, res) => {
